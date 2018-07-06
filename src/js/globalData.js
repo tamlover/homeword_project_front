@@ -1,0 +1,5 @@
+export const PATH_DEVICE = 'device'
+export const DEVICE = 'device'
+export const PATH_USERINFO = 'userinfo'
+export const USERINFO = 'userinfo'
+export const MAIN = 'main'
