@@ -40,15 +40,13 @@ export default {
   },
   methods: {
     loginSubmit () {
-      console.log('123')
       let param = {}
       param['account'] = this.account
       param['password'] = this.password
       loginAPI.loginWithPwd(param).then(data => {
-        console.log('login success')
         if (data.ErrorCode === '0') {
           this.$router.push({name: 'Device'})
-          localStorage.setItem('user', data.user)
+          localStorage.setItem('userId', data.user.userId)
         } else {
           Message({message: data.ErrorMessage, type: 'error', duration: 2000})
         }
@@ -64,7 +62,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .login-wrapper{
     background: url('../../assets/images/sky.jpg') center center no-repeat;
     display: flex;
@@ -72,6 +70,8 @@ export default {
     justify-content: center;
     height: 100vh;
     background-size: 100% 100%;
+    background-attachment: fixed;
+    overflow: hidden;
   }
   .login-form{
     text-align: center;
