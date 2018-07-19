@@ -1,5 +1,7 @@
 import axios from 'axios'
 import Qs from 'qs'
+import * as tokenPrc from '@/js/tokenProcess'
+import {loginAPI} from '@/api/restfulAPI'
 
 const DOMAIN_KEY = 'wise-paas'
 const DEF_REST_PREFIX = '/my-project-end/api'
@@ -9,6 +11,9 @@ const REST_BASEURL = getBaseURL()
 axios.defaults.headers.common['Accept'] = 'application/json'
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.interceptors.response.use(response => {
+  if (response.data.token !== undefined) {
+    tokenPrc.setToken(response.data.token)
+  }
   return response.data
 }, error => {
   let errInfo = {}
@@ -19,13 +24,25 @@ axios.interceptors.response.use(response => {
     }
     if (errInfo.errCode === 401) {
       console.log('go 401')
-      window.location.reload()
+      window.location.href = '/#/login'
     }
   }
   return Promise.reject(errInfo)
 })
 
 axios.interceptors.request.use(config => {
+  if (localStorage.getItem('token') !== null && localStorage.getItem('userId') !== null) {
+    if (!(config.url === '/my-project-end/api/login' || config.url === '/my-project-end/api/login/refresh')) {
+      let param = {}
+      param['userId'] = localStorage.getItem('userId')
+      loginAPI.refreshToken(param).then(data => {
+      // console.log(config.url)
+      }).catch(error => {
+        console.log(error)
+      })
+    }
+  }
+
   return config
 })
 
@@ -51,6 +68,13 @@ function ajaxRest ({url, method, data = {},
       data: bodyData,
       timeout: timeout.client,
       responseType: responseType
+    }
+
+    let token = localStorage.getItem('token')
+    if (token != null) {
+      config.headers = {
+        'Authorization': token
+      }
     }
 
     axios.request(config).then(data => {

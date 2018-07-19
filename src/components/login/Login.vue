@@ -27,6 +27,7 @@
 
 import {loginAPI} from '@/api/restfulAPI'
 import { Message } from 'element-ui'
+import * as tokenPrc from '@/js/tokenProcess'
 
 export default {
   name: 'Login',
@@ -44,6 +45,8 @@ export default {
       param['account'] = this.account
       param['password'] = this.password
       loginAPI.loginWithPwd(param).then(data => {
+        // localStorage.setItem('token', 'Bearer ' + data.token)
+        tokenPrc.setToken(data.token)
         if (data.ErrorCode === '0') {
           this.$router.push({name: 'Device'})
           localStorage.setItem('userId', data.user.userId)

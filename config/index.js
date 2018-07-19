@@ -11,7 +11,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/my-project-end/api': {
-        target: 'http://172.21.84.50:3334',
+        target: 'http://172.21.84.52:3334',
       }
     },
 

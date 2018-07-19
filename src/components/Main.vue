@@ -102,6 +102,7 @@ export default {
     logout () {
       this.$router.push({name: 'Login'})
       localStorage.removeItem('userId')
+      localStorage.removeItem('token')
     },
     isAdmin () {
       if (localStorage.getItem('userId') === '1') {
