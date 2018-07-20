@@ -42,24 +42,6 @@ const mRouter = {
   ]
 }
 
-// export default new Router({
-//   routes: [
-//     {
-//       path: '/',
-//       component: {
-//         template: '<keep-alive><router-view></router-view></keep-alive>'
-//       },
-//       redirect: {name: 'Main'},
-//       children: [
-//         userRoutes,
-//         deviceRoutes,
-//         mainRoutes,
-//         loginRoutes
-//       ]
-//     }
-//   ]
-// })
-
 const routes = [
   {
     path: '/',
