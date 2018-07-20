@@ -11,8 +11,9 @@ const REST_BASEURL = getBaseURL()
 axios.defaults.headers.common['Accept'] = 'application/json'
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.interceptors.response.use(response => {
-  if (response.data.token !== undefined) {
-    tokenPrc.setToken(response.data.token)
+  if (response.headers.token !== undefined) {
+    // console.log('refresh token')
+    tokenPrc.setToken(response.headers.token)
   }
   return response.data
 }, error => {
@@ -25,6 +26,8 @@ axios.interceptors.response.use(response => {
     if (errInfo.errCode === 401) {
       console.log('go 401')
       window.location.href = '/#/login'
+      localStorage.removeItem('token')
+      localStorage.removeItem('userId')
     }
   }
   return Promise.reject(errInfo)
